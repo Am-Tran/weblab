@@ -1,0 +1,3 @@
+name,password,email,failed_login_attemps,logged_in,role
+utilisateur,$2b$12$10A7g.pqmcmm4ZZzZbxaS.UUjFarfXmAo1Tok2Zs49fjK9u3Nd7ye,utilisateur@gmail.com,0,False,utilisateur
+root,$2b$12$C2eJesCtd0w.GUZmkjYiqepr5Zwlm0EvEQ2Q5Frcu44BSKAZO6kbW,admina@gmail.com,0,False,administrateur

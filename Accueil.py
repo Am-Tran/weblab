@@ -1,29 +1,25 @@
 import streamlit as st
+import pandas as pd
 from streamlit_option_menu import option_menu
 from streamlit_authenticator import Authenticate
 
 
 # --- 1. CONFIGURATION ---
-lesDonneesDesComptes = {
-    'usernames': {
-        'utilisateur': {
-            'name': 'utilisateur',
-            'password': 'utilisateurMDP',
-            'email': 'utilisateur@gmail.com',
-            'failed_login_attemps': 0,  # Sera géré automatiquement
-            'logged_in': False,          # Sera géré automatiquement
-            'role': 'utilisateur'
-        },
-        'root': {
-            'name': 'root',
-            'password': 'rootMDP',
-            'email': 'admin@gmail.com',
-            'failed_login_attemps': 0,  # Sera géré automatiquement
-            'logged_in': False,          # Sera géré automatiquement
-            'role': 'administrateur'
-        }
-    }
-}
+# --- CHARGEMENT DES UTILISATEURS DEPUIS LE CSV ---
+try:
+    # 1. On lit le fichier CSV
+    df_users = pd.read_csv('users.csv')
+
+    # 2. On convertit le tableau Pandas en dictionnaire pour l'authenticator
+    # L'astuce : on utilise la colonne "name" comme clé principale
+    users_dict = df_users.set_index('name', drop=False).to_dict(orient='index')
+
+    # 3. On remet ça dans la structure attendue : {'usernames': ...}
+    lesDonneesDesComptes = {'usernames': users_dict}
+
+except FileNotFoundError:
+    st.error("Le fichier users.csv est introuvable. Veuillez lancer create_users.py d'abord.")
+    st.stop()
 
 authenticator = Authenticate(
     lesDonneesDesComptes,  # Les données des comptes
